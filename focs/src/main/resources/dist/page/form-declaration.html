@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAR UMT - Application for Admission Undergraduate Programme</title>
+    <link rel="shortcut icon" href="https://web.tarc.edu.my/portal/images/tarucLogo.png" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/compiled/css/app.css">
+    <link rel="stylesheet" href="../assets/compiled/css/app-dark.css">
+    <link rel="stylesheet" href="../assets/compiled/css/iconly.css">
+    <link rel="stylesheet" href="../plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.6/lib/theme-chalk/index.css">
+
+    <style>
+      /* Apply specific styles to the first radio button */
+      fieldset .form-check:first-child {
+          padding-left: 0.7rem; /* Remove padding-left for the first radio button */
+      }
+      
+      .load-modal {
+        display: none; 
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); 
+        z-index: 1000; 
+        justify-content: center;
+        align-items: center;
+        display: flex;
+      }
+      
+      .modal-wrap {
+        /* background-color: #fff;  */
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+      }
+
+      .spinner {
+        width: 5rem;
+        display: block;
+        margin: 0 auto; 
+      }
+    </style>
+
+</head>
+
+<body>
+    <script src="../assets/static/js/initTheme.js"></script>
+    <div id="app">
+        <div id="sidebar">
+            <div class="sidebar-wrapper active">
+    <div class="sidebar-header position-relative">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="logo">
+                <a href="../index.html"><img src="https://www.tarc.edu.my/images/tarumt-logo1.png?v=beyongEducation2" alt="Logo" srcset="" style="width: 150px; height: 60px;"></a>
+            </div>
+            <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                    role="img" class="iconify iconify--system-uicons" width="20" height="20"
+                    preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
+                    <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                            opacity=".3"></path>
+                        <g transform="translate(-210 -1)">
+                            <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                            <circle cx="220.5" cy="11.5" r="4"></circle>
+                            <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
+                        </g>
+                    </g>
+                </svg>
+                <div class="form-check form-switch fs-6">
+                    <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
+                    <label class="form-check-label"></label>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                    role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
+                    viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+                    </path>
+                </svg>
+            </div>
+            <div class="sidebar-toggler  x">
+                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar-menu">
+        <ul class="menu">
+            <li class="sidebar-title">Menu</li>
+            
+            <li
+                class="sidebar-item ">
+                <a href="../index.html" class='sidebar-link'>
+                    <i class="bi bi-grid-fill"></i>
+                    <span>My Application</span>
+                </a>
+                
+
+            </li>
+            
+            <li
+                class="sidebar-item  has-sub active">
+                <a href="#" class='sidebar-link'>
+                    <i class="bi bi-journal-check"></i>
+                    <span>New Application</span>
+                </a>         
+                <ul class="submenu ">
+                  <li class="submenu-item ">
+                    <a href="./form-intake.html" class="submenu-link">Intake & Programme</a>                  
+                  </li> 
+                  <li class="submenu-item ">
+                      <a href="./form-profile.html" class="submenu-link">Profile</a>                  
+                  </li> 
+                  <li class="submenu-item  ">
+                      <a href="./form-detailed.html" class="submenu-link">Detailed Info</a>                  
+                  </li> 
+                  <li class="submenu-item  ">
+                      <a href="./form-qualification.html" class="submenu-link">Qualifications</a>                  
+                  </li>                            
+                  <li class="submenu-item active ">
+                      <a href="./form-declaration.html" class="submenu-link">Declaration</a>                  
+                  </li> 
+                </ul>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="../focs/submitEnquiry.html"
+                target="_blank"
+                class="sidebar-link"
+              >
+                <i class="bi bi-question-square"></i>
+                <span>Enquiry</span>
+              </a>
+            </li>
+            <li class="sidebar-item ">
+              <a href="https://web.tarc.edu.my/portal/cpsr/admission/user/Manual.pdf" target="_blank" class='sidebar-link'>
+                  <i class="bi bi-journal-richtext"></i>
+                  <span>Manual Guide</span>
+              </a>
+          </li>
+          <li class="sidebar-item ">
+              <a href="https://web.tarc.edu.my/portal/cpsr/admission/user/doc/TARUMT_ApplicationChecklist.pdf" target="_blank" class='sidebar-link'>
+                  <i class="bi bi-card-checklist"></i>
+                  <span>Application Checklist</span>
+              </a>
+          </li>
+        </ul>
+    </div>
+</div>
+        </div>
+        <div id="main">
+            <header class="mb-3">
+                <a href="#" class="burger-btn d-block d-xl-none">
+                    <i class="bi bi-justify fs-3"></i>
+                </a>
+            </header>
+            
+<div class="page-heading">
+  <div class="page-title">
+    <div class="row">
+      <div class="col-12 col-md-6 order-md-1 order-last">
+        <h3>Declaration Of Online Application for Admission</h3>
+        <p class="text-subtitle text-muted">
+          Complete the application for admission undergraduate programme.
+        </p>
+      </div>
+      <div class="col-12 col-md-6 order-md-2 order-first">
+        <nav
+          aria-label="breadcrumb"
+          class="breadcrumb-header float-start float-lg-end"
+        >
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="../index.html">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                New Application
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Declaration</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+ <div id="declaration-app">
+  <section id="list-group-icons">
+    <div class="row match-height">
+        <div class="col-lg-5 col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Application for admission checklist </h4>
+                </div>
+                <div class="card-content">
+                    <div class="card-body" style="padding-top: 0;">
+                        <p>
+                          You can check any completed or missing forms as shown below: 
+                        </p>
+                        <ul class="list-group">
+                            <li class="list-group-item checkbox">
+                                <input id="checkbox-1" class="form-check-input me-1" type="checkbox" disabled :checked="gotIntakeData" value="" aria-label="...">
+                                <label for="checkbox-1">Intake & Programme Form</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input id="checkbox-2" class="form-check-input me-1" type="checkbox" disabled :checked="gotProfileData" value="" aria-label="...">
+                                <label for="checkbox-2">Profile & Emergency Form</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input id="checkbox-3" class="form-check-input me-1" type="checkbox" disabled :checked="gotDetailedInfoData" value="" aria-label="...">
+                                <label for="checkbox-3">Detailed Info Form</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input id="checkbox-4" class="form-check-input me-1" type="checkbox" disabled :checked="gotQualificationData" value="" aria-label="...">
+                                <label for="checkbox-4">Qualifications Form</label>
+                            </li>
+                        </ul>
+
+                        <div>
+                          <p v-if="checkAllFormCompletion()" style="padding-top: 30px;">
+                            All forms have been completed. Please proceed to the qualification verification on the left and/or submit application for admission.
+                         </p>
+                         <p v-else style="color: rgb(208, 32, 32); padding-top: 30px;">
+                            Please check out the four required forms on the top to figure out the missing one.
+                        </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-12">
+          <div class="card">
+              <div class="card-header">
+                  <h4 class="card-title">Qualification Verification</h4>
+              </div>
+              <div class="card-content">
+                  <div class="card-body" style="padding-top: 0;">  
+                    <div>
+                      <h4 class="card-title">SPM/O LEVEL/EQUIVALENT</h4>
+                      <div v-for="choice in [applications[0].intakes.programmeChoice1, applications[0].intakes.programmeChoice2, applications[0].intakes.programmeChoice3]">
+                        <p :key="choice.programme" style="margin-bottom: 0.4rem">
+                          <span v-if="choice.programme in programRequirements">
+                            <span v-if="meetsDiplomaCriteria(choice)">
+                              You've met the minimum entry requirements for the following programme:
+                            </span>
+                            <span v-else style="color: rgb(208, 32, 32)">
+                              You've not met the minimum entry requirements for the following programme:
+                            </span>
+                          </span>
+                          <span v-else>
+                            <span v-if="meetsMinimumCredits()">
+                              You've met the minimum entry requirements for the following programme:
+                            </span>
+                            <span v-else style="color: rgb(208, 32, 32)">
+                              You've not met the minimum entry requirements for the following programme:
+                            </span>
+                          </span>
+                          <br>
+                          <p style="font-weight: 900; margin-bottom: 0.4rem;">{{ choice.programme }}</p>
+                        </p>
+                        
+                        <div>
+                            <p style="margin-bottom: 0.4rem">Minimum Subject Requirements:</p>
+                            <ul v-if="choice.programme in programRequirements">
+                              <li v-if="isMathRequired(choice.programme)" :style="{ color: (getGrade('MATHEMATICS') || '').includes('not met') ? 'rgb(208, 32, 32)' : '' }">
+                                MATHEMATICS: {{ getGrade('MATHEMATICS') }}
+                              </li>
+                              <li :style="{ color: (getGrade('BAHASA INGGERIS') || '').includes('not met') ? 'rgb(208, 32, 32)' : '' }">
+                                BAHASA INGGERIS: {{ getGrade('BAHASA INGGERIS') }}
+                              </li>
+                              <li v-if="isAdditionalMathRequired(choice.programme)" :style="{ color: (getGrade('ADDITIONAL MATHEMATICS') || '').includes('not met') ? 'rgb(208, 32, 32)' : '' }">
+                                ADDITIONAL MATHEMATICS: {{ getGrade('ADDITIONAL MATHEMATICS') }}
+                              </li>
+                              <li v-if="meetsMinimumCredits()">
+                                At least 3 Credits and above met
+                              </li>
+                              <li v-if="!meetsMinimumCredits()" style="color: rgb(208, 32, 32)">
+                                You need to have at least 3 Credits and above
+                              </li>
+                            </ul>
+                            <ul v-else-if="meetsMinimumCredits()">
+                              <li>
+                                At least 3 Credits and above met
+                              </li>
+                            </ul>
+                            <ul v-else style="color: rgb(208, 32, 32)">
+                              <li>
+                                You need to have at least 3 Credits and above
+                              </li>
+                            </ul>
+                        </div>
+                        <hr>
+                      </div>
+                      <!-- For Degree -->
+                      <div style="margin-top: 30px;" v-if="checkForDegreePrograms() && hasDegreeProgramme">
+                        <h4 class="card-title">STPM/A LEVEL/UEC/EQUIVALENT (IF APPLICABLE)</h4>
+                        <p>
+                          <p v-if="meetsDegreeCriteria()">
+                            You've met the minimum entry requirements for the degree programme.
+                          </p>
+                          <p v-else style="color: rgb(208, 32, 32)">
+                            You've not met the minimum entry requirements (2 Credits) for the degree programme.
+                          </p>
+                        </p>
+                        <ul v-if="meetsDegreeCriteria()">
+                          <li>
+                            At least 2 Credits and above met
+                          </li>
+                        </ul>
+                        <ul v-else>
+                          <li style="color: rgb(208, 32, 32)">
+                            You need to have at least 2 Credits and above
+                          </li>
+                        </ul>
+                        <hr>
+                      </div>
+
+
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- The modal dialog -->
+  <div id="loading-modal" class="load-modal" style="display: none">
+    <div class="modal-wrap">
+      <img src="../assets/compiled/svg/ball-triangle.svg" class="spinner" alt="Loading">
+      <p style="padding-top: 10px;">Loading...</p>
+    </div>
+  </div>
+
+
+  <section id="multiple-column-form">
+    <div class="row match-height">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title"><i class="bi bi-file-earmark-text-fill" style="padding-right: 20px;"></i>Declaration</h4>
+            <p>
+                I declare that all information and documents given and submitted are true and complete. I understand that Tunku Abdul Rahman University of Management and Technology (TAR UMT) has the right to reject this application or to terminate my student status with immediate effect and my application for admission into TAR UMT programmes in future will not be considered if in my application or at any time during my studies, I am found to have provided false or incomplete information, certificates or supporting documents.
+                <br><br>
+                I understand that my information and details in TAR UMT records may be released to government, legislative and enforcement agencies and where these information is required to comply with any law or regulatory requirements.
+                <br><br>      
+                I agree that TAR UMT can send me information relating to TAR UMT.
+                <br><br>    
+                I hereby declare that I have read and understood and agree to comply with TAR UMT policy on <a href="https://www.tarc.edu.my/files/bursary/C09C5D57-AADF-45E9-915A-3E656D321922.pdf" target="_blank">refund of fees.</a>
+            </p>
+          </div>
+          <div class="card-content">
+            <div class="card-body" >
+              <form class="form" data-parsley-validate id="">
+                <div class="form-group">
+                  <div class="form-check mandatory">
+                    <input type="checkbox" id="checkbox5" class="form-check-input" data-parsley-required="true" data-parsley-required-message="You have to accept our terms and conditions to proceed." data-parsley-errors-container="#checkbox-error-container" 
+                        :disabled="!isAllFormCompleted || !diplomaMeet" data-parsley-trigger="change"/>
+                    <label for="checkbox5" class="form-check-label form-label" data-bs-toggle="tooltip" data-bs-placement="top"  title="You must complete all the forms and meet minimum entry requirements in order to submit application for admission." >AGREE</label>
+                  </div>
+                </div>
+                <div class="row" v-if="showSubmitBtn">
+                  <div class="col-md-12 col-12 d-flex justify-content-end align-items-end" style="padding-top: 20px; ">
+                    <div class="col-md-8 d-flex justify-content-end">
+                      <button type="submit" class="btn btn-primary me-1 mb-1" @click="submitForm('formData')" :disabled="!isAllFormCompleted || !diplomaMeet" 
+                           data-bs-toggle="tooltip" data-bs-placement="top" title="You must complete all the forms and meet minimum entry requirements in order to submit application for admission." >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div> 
+  <!-- // Basic multiple Column Form section end -->
+</div>
+
+<footer>
+    <div class="float-start">
+        <p>2023 &copy; TAR UMT</p>
+    </div>
+    <div class="float-end">
+        <p>Kindly Complete <span class=""><i class="bi bi-caret-right-square-fill icon-mid"></i></span>
+            the <a href="#">Application</a></p>
+    </div>
+</footer>
+        </div>
+    </div>
+    <script src="../assets/static/js/components/dark.js"></script>
+    <script src="../assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="../assets/compiled/js/app.js"></script>
+      
+      <script src="../assets/extensions/jquery/jquery.min.js"></script>
+      <script src="../assets/extensions/parsleyjs/parsley.min.js"></script>
+      <script src="../assets/static/js/pages/parsley.js"></script>
+
+      <script src="../plugins/axios/axios.min.js"></script>
+      <script src="../plugins/element-ui/index.js"></script>
+      <script src="../plugins/vue/vue.js"></script>
+      <script src="../api/profile.js"></script>
+      <script src="../api/application.js"></script>
+      <script src="../api/intake.js"></script>
+      <script src="../api/qualification.js"></script>
+      <script src="../api/qualification2.js"></script>
+      <script src="../api/detailedInfo.js"></script>
+      <script src="../api/intake.js"></script>
+      <script src="../js/request.js"></script>
+      <script src="../js/index.js"></script>
+      <script src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script>
+
+
+<script>
+    new Vue({
+      el: '#declaration-app',
+        data() {
+            return {
+                id: '',
+                showSubmitBtn: true,
+                applicationId: '',
+                isEditing: true,
+                hasDegreeProgramme: false,
+                gotProfileData: false,
+                gotQualificationData: false,
+                gotDetailedInfoData: false,
+                gotIntakeData: false,
+                isAllFormCompleted: false,
+                diplomaMeet: false,
+                userInfo: {},
+                applications: [
+                    {
+                      "applicationId": "",
+                      "status": "",
+                      "createdDate": "",
+                      "submittedDate": "",
+                      "intakeId": "",
+                      "profileInfoId": "",
+                      "detailedInfoId": "",
+                      "qualificationId": "",
+                      "applicantId": "",
+                      intakes: {        // Default value, or load from the server
+                          programmeChoice1: {
+                              "session": "",
+                              "campus": "", 
+                              "levelOfStudy": "",
+                              "entryQualification": "",
+                              "programme": "",
+                              "firstSem": "",
+                              "priority": "1",
+                              "applicantId": "",
+                            },
+                          programmeChoice2: {
+                              "session": "",
+                              "campus": "", 
+                              "levelOfStudy": "",
+                              "entryQualification": "",
+                              "programme": "",
+                              "firstSem": "",
+                              "priority": "2",
+                              "applicantId": "",
+                            },
+                          programmeChoice3: {
+                              "session": "",
+                              "campus": "", 
+                              "levelOfStudy": "",
+                              "entryQualification": "",
+                              "programme": "",
+                              "firstSem": "",
+                              "priority": "3",
+                              "applicantId": "",
+                            },
+                          "applicantId": "",
+                          "session": "",
+                      },
+                      profileInfo: {
+                           'fullName': '',
+                           'mykadNo': '',
+                           'nationality': 'Please select',
+                           'dateOfBirth': '',
+                           'gender': '', 
+                           'maritalStatus': '', 
+                           'race': 'Please select',
+                           'religion': 'Please select',
+                           'address': '',
+                           'postcode': '',
+                           'state': 'Please select',
+                           'country': 'Please select',
+                           'homeTelNo': '',
+                           'mobileNo': ''
+                        },
+                      emergencyInfo: {
+                         'fullName': '',
+                         'relationship': '',
+                         'address': '',
+                         'postcode': '',
+                         'state': 'Please select',
+                         'country': 'Please select',
+                         'contactNo': '',
+                         'email': ''
+                      },
+                      detailedInfo: {
+                        'icImage': '',
+                        'householdIncome': '',
+                        'medicalCondition': '',
+                      },
+                      qualification1: {
+                        "qualificationId": "",
+                        "category": "SPM/O LEVEL/EQUIVALENT",
+                        "year": "",
+                        "type": "",
+                        "academicProve": "",
+                        preuResultList: []
+                      },
+                      qualification2: {
+                        "qualificationId": "",
+                        "category": "STPM/A LEVEL/UEC/EQUIVALENT (IF APPLICABLE)",
+                        "year": "",
+                        "type": "",
+                        "academicProve": "",
+                        preuResultList: []
+                      },
+                    }
+                ],
+                programRequirements: {
+                      "DIPLOMA IN INFORMATION SYSTEMS": {mathRequirement: true,addMathRequirement: false,},
+                      "DIPLOMA IN INFORMATION TECHNOLOGY": {mathRequirement: true,addMathRequirement: false,},
+                      "DIPLOMA IN SOFTWARE ENGINEERING": {mathRequirement: true,addMathRequirement: false,},
+                      "BACHELOR OF SOFTWARE ENGINEERING (HONOURS)": {mathRequirement: true,addMathRequirement: false,},
+                      "BACHELOR OF INFORMATION TECHNOLOGY (HONOURS) IN SOFTWARE SYSTEMS DEVELOPMENT": {mathRequirement: true,addMathRequirement: false,},
+                      "BACHELOR OF COMPUTER SCIENCE (HONOURS) IN INTERACTIVE SOFTWARE TECHNOLOGY": {mathRequirement: true,addMathRequirement: true,},
+                      "BACHELOR OF INFORMATION TECHNOLOGY (HONOURS) IN INTERNET TECHNOLOGY": {mathRequirement: true,addMathRequirement: false,},
+                      "BACHELOR OF INFORMATION TECHNOLOGY (HONOURS) IN INFORMATION SECURITY": {mathRequirement: true,addMathRequirement: false,},
+                      "BACHELOR OF COMPUTER SCIENCE (HONOURS) IN DATA SCIENCE": {mathRequirement: true,addMathRequirement: true,},
+                      "BACHELOR OF SCIENCE (HONOURS) IN MANAGEMENT MATHEMATICS WITH COMPUTING": {mathRequirement: true,addMathRequirement: true,},
+                      "DIPLOMA IN COMPUTER SCIENCE": {mathRequirement: false,addMathRequirement: true,},
+                      "BACHELOR OF SOFTWARE ENGINEERING (HONOURS)": {mathRequirement: true,addMathRequirement: true,},
+                }
+            }
+        },
+        computed: {
+        },
+        created() {
+            // this.init()
+            const userInfo = window.localStorage.getItem('userInfo')
+            if (userInfo) {
+                console.log(userInfo)
+                this.userInfo = JSON.parse(userInfo)
+            }
+            if(this.userInfo.applicantId) {
+              this.init()
+            } else {
+                  // this.$message.warning('Haven\' Login Account')
+                  window.location.href = "./page/login.html";
+            }
+        },
+        mounted() {
+          // this.checkForDegreePrograms();
+        },
+        methods: {
+            init() {
+                const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
+                if(userInfo) {
+                    this.id = userInfo.applicantId;
+                } 
+                console.log("init id here: " + this.id )
+                
+                getApplication(this.id).then(res => {
+                  console.log(res)  
+                    if (String(res.code) === '1') {
+                        const newData = res.data;
+                        if(newData.length > 0) {
+                          // this.applications = newData;
+                          // this.applications = newData.map(item => ({
+                          //   ...item,
+                          //   intakes: {
+                          //     ...this.applications.intakes,
+                          //     ...item.intakes
+                          //   }
+                          // }));
+                          this.applicationId = newData[0].applicationId
+                          console.log(this.applicationId) 
+                          this.findIntake()
+                          this.findProfile()
+                          this.findDetailedInfo()
+                          this.findQualificationSPM()
+                          this.findQualificationSTPM()
+
+                          if(newData[0].status === 'Success') {
+                            this.showSubmitBtn = false;
+                          }
+                        } else {
+                          this.$message.warning('Pending submission of application!')
+                        }
+                    } else {
+                        // this.$message.error(res.msg || 'Fail to handle')
+                        this.$message.error('Pending submission of application!')
+                       
+                    }
+                })
+            },
+            findIntake() {
+              if(this.applications[0].intakeId != null) {
+                getIntake(this.id).then(res => {
+                      console.log(res)
+                      if (String(res.code) === '1') {
+                          const newData = res.data;
+                          if(newData[0] != null) {
+                                const programmeChoices = {
+                                  programmeChoice1: null,
+                                  programmeChoice2: null,
+                                  programmeChoice3: null,
+                                };
+
+                              newData.forEach((intake) => {
+                                  switch (intake.priority) {
+                                    case 1:
+                                      programmeChoices.programmeChoice1 = intake;
+                                      break;
+                                    case 2:
+                                      programmeChoices.programmeChoice2 = intake;
+                                      break;
+                                    case 3:
+                                      programmeChoices.programmeChoice3 = intake;
+                                      break;
+                                    default:
+                                      break;
+                                  }
+                              });
+                              console.log(programmeChoices)
+                              this.applications[0].intakes = programmeChoices;
+                              this.applications[0].intakes.session = programmeChoices.programmeChoice1.session;
+                              this.gotIntakeData = true
+                          } else {
+                            this.$message.warning('Haven\' Fill Up Intake & Programme Form!')
+                          }
+                      } 
+                    })
+              }
+            },
+            findProfile() {
+              if(this.applications[0].profileInfoId != null) {
+                getProfile(this.id).then(res => {
+                    console.log(res)
+                    if (String(res.code) === '1') {
+                        console.log(res.data)
+                        if(res.data.profileInfo) {
+                          this.applications[0].profileInfo = res.data.profileInfo
+                          this.applications[0].emergencyInfo = res.data.emergencyInfo
+                          console.log(this.applications)
+                          this.gotProfileData = true
+                        } else {
+                        this.$message.warning('Haven\' Fill Up Profile Info Form!')
+                      }
+                    } 
+                })
+              }
+            },
+            findDetailedInfo() {
+              if(this.applications[0].detailedInfoId != null) {
+                getDetailedInfo(this.id).then(res => {
+                   console.log(res)
+                   if (String(res.code) === '1') {
+                     console.log(res.data)
+                     if (res.data != null) {
+                        this.applications[0].detailedInfo = res.data
+                        this.gotDetailedInfoData = true
+                     } else {
+                        this.$message.warning('Haven\' Fill Up DetailedInfo Form!')
+                      }
+                   } 
+                })
+              }
+            },
+            findQualificationSPM() {
+              if(this.applications[0].qualificationId != null) {
+                getQualification(this.id).then(res => {
+                    console.log(res)
+                    if (String(res.code) === '1') {
+                        if(res.data.qualificationId) {
+                          console.log(res.data)
+                          this.applications[0].qualification1 = res.data
+                          this.applications[0].qualification1.preuResultList = res.data.preuResultList;
+                          console.log(this.applications)
+                          this.gotQualificationData = true
+                        } else {
+                          this.$message.warning('Haven\' Fill Up Qualification Form!')
+                      }
+                    } 
+                })
+              }
+            },
+            findQualificationSTPM() {
+              getQualificationSTPM(this.id).then(res => {
+                  console.log(res)
+                  if (String(res.code) === '1') {
+                      if(res.data.qualificationId) {
+                          console.log(res.data)
+                          this.applications[0].qualification2 = res.data
+                          this.applications[0].qualification2.preuResultList = res.data.preuResultList;
+                          console.log(this.applications)
+                      } 
+                  } 
+              })
+            },
+            meetsMinimumCredits() {
+                if (this.isAllFormCompleted) {
+                  const spmResults = this.applications[0].qualification1.preuResultList.filter(result => result.resultType === 'SPM');
+                  const creditAndAboveSubjects = spmResults.filter(result => ['A+', 'A', 'A-', 'B+', 'B', 'C+', 'C'].includes(result.grade));         
+                  
+                  // Check if there are at least 3 subjects with Credit and above in SPM
+                  return creditAndAboveSubjects.length >= 3;
+                }
+                return false; 
+            },
+            meetsDiplomaCriteria(choice) {
+              if (this.isAllFormCompleted) {
+                  const spmResults = this.applications[0].qualification1.preuResultList.filter(result => result.resultType === 'SPM');
+                  const bahasaInggerisResult = spmResults.find(result => result.subject === 'BAHASA INGGERIS');
+                  const mathematicsResult = spmResults.find(result => result.subject === 'MATHEMATICS');
+                  const selectedPrograms = [choice.programme];
+
+                  let meetsRequirements = true;
+
+                  for (const program of selectedPrograms) {
+                    if (this.programRequirements.hasOwnProperty(program)) {
+                      const requirements = this.programRequirements[program];
+                      const creditAndAboveSubjects = spmResults.filter(result => ['A+', 'A', 'A-', 'B+', 'B', 'C+', 'C', 'D', 'E'].includes(result.grade));
+                      const meetsMathRequirement = requirements.mathRequirement ? mathematicsResult && ['A+', 'A', 'A-', 'B+', 'B', 'C+', 'C'].includes(mathematicsResult.grade) : true;
+                      const meetsAddMathRequirement = requirements.addMathRequirement ?
+                        creditAndAboveSubjects.some(result => result.subject === 'ADDITIONAL MATHEMATICS' && ['A+', 'A', 'A-', 'B+', 'B', 'C+', 'C'].includes(result.grade)) : true;
+                    
+                      // Check if the program's requirements are met
+                      // At least 3 Credits, Inggeris E and above, Mathematics C and above, and some programmes may need "Additional Mathematics"
+                      if (!(creditAndAboveSubjects.length >= 3 &&
+                          bahasaInggerisResult && ['A+', 'A', 'A-', 'B+', 'B', 'C+', 'C', 'D', 'E'].includes(bahasaInggerisResult.grade) &&
+                          meetsMathRequirement && meetsAddMathRequirement)) {
+                        meetsRequirements = false;
+                        break;
+                      }
+                    } else {
+                      // Program name not found in programRequirements
+                      console.error(`Program requirements not found for ${program}`);
+                      meetsRequirements = false;
+                      break;
+                    }
+                  }
+                  this.diplomaMeet = meetsRequirements;
+                  return meetsRequirements;
+                }
+            },
+            meetsDegreeCriteria() {
+                if (this.isAllFormCompleted) {
+                  const stpmResults = this.applications[0].qualification2.preuResultList.filter(result => result.resultType === 'STPM');
+                  const creditAndAboveSubjects = stpmResults.filter(result => ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C'].includes(result.grade));
+                  if(!(creditAndAboveSubjects.length >= 2)) {
+                    this.diplomaMeet = false
+                  }
+                  // Check if there are at least 2 subjects with Credit and above in STPM
+                  return creditAndAboveSubjects.length >= 2;
+                }
+                return false;
+            },
+            checkAllFormCompletion() {
+              if(this.gotProfileData && this.gotIntakeData && this.gotDetailedInfoData && this.gotQualificationData) {
+                  this.isAllFormCompleted = true;
+                  console.log("All forms completed")
+                  return true
+              } else {
+                this.isAllFormCompleted = false;
+              }
+              return false;
+          },
+            checkForDegreePrograms() {
+              const choices = [
+                this.applications[0].intakes.programmeChoice1,
+                this.applications[0].intakes.programmeChoice2,
+                this.applications[0].intakes.programmeChoice3,
+              ];
+              
+              for (const choice of choices) {
+                if (choice.levelOfStudy.includes('DEGREE')) {
+                  this.hasDegreeProgramme = true;
+                  console.log("Degree programme: Yes")
+                  return this.hasDegreeProgramme
+                }
+              }
+            },
+            isMathRequired(program) {
+                const requirements = this.programRequirements[program];
+                console.log(program + "s Math': " + requirements.mathRequirement)
+                return requirements && requirements.mathRequirement;
+            },
+            isAdditionalMathRequired(program) {
+                const requirements = this.programRequirements[program];
+                console.log(program+ "'s AM': " + requirements.addMathRequirement)
+                return requirements && requirements.addMathRequirement;
+            },
+            getGrade(subject) {
+                const resultList = this.applications[0].qualification1.preuResultList;
+                const subjectResult = resultList.find((result) => result.subject === subject);
+
+                if (subjectResult) {
+                  const grade = subjectResult.grade;
+
+                  const gradeScale = {
+                    'A+': 10,
+                    'A': 9,
+                    'A-': 8,
+                    'B+': 7,
+                    'B': 6,
+                    'B-': 5,
+                    'C+': 4,
+                    'C': 3,
+                    'C-': 2,
+                    'D': 1,
+                    'E': 0,
+                  };
+                
+                  if (
+                    (subject === 'MATHEMATICS' && gradeScale[grade] >= gradeScale['C']) ||
+                    (subject === 'BAHASA INGGERIS' && gradeScale[grade] >= gradeScale['E']) ||
+                    (subject === 'ADDITIONAL MATHEMATICS' && gradeScale[grade] >= gradeScale['C'])
+                  ) {
+                    return grade + ' met';
+                  }
+                  this.diplomaMeet = false;
+                  return grade + ' not met';
+                }
+            },
+            submitForm (formName) {
+                  event.preventDefault(); 
+                  // const params = {}
+                  // params.submittedDate = Date.now().toISOString();
+                  // params.profileInfo.dateOfBirth = new Date(this.formData.profileInfo.dateOfBirth).toISOString();
+
+                  const params = {...this.applications}
+                  params.applicantId = JSON.parse(window.localStorage.getItem('userInfo')).applicantId;
+                  params.applicationId = this.applicationId
+
+                  // params.detailedInfo.academicProve = '';
+                  // console.log(this.applicationId)
+
+                  document.getElementById('loading-modal').style.display = 'flex';
+
+                  updateApplication (params).then(res => {
+                    setTimeout(() => {
+                      document.getElementById('loading-modal').style.display = 'none';
+                    }, 5000); // 1.5secs
+                    console.log(res)
+                    if (String(res.code) === '1') {
+                        if(res.data) {
+                          console.log('Successfully submitted and updated intake details！')
+                          this.$message.success('Successfully submitted and updated intake details！')
+                            setTimeout(() => {
+                              window.location.href = ('./../index.html')
+                            }, 1500)
+                        } else {
+                          this.$message.warning('Haven\' Submit This Declaration!')
+                      }
+                    } 
+                })
+              
+
+            },
+        }
+        
+
+    });
+          
+</script>
+
+
+</body>
+
+</html>

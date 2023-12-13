@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAR UMT - Application for Admission Undergraduate Programme</title>
+  <link rel="shortcut icon" href="https://web.tarc.edu.my/portal/images/tarucLogo.png" type="image/x-icon">
+  <link rel="stylesheet" href="../assets/compiled/css/app.css">
+  <link rel="stylesheet" href="../assets/compiled/css/app-dark.css">
+  <link rel="stylesheet" href="../assets/compiled/css/iconly.css">
+  <link rel="stylesheet" href="../plugins/element-ui/index.css" />
+  <link rel="stylesheet" href="../assets/compiled/css/uploadFile.css" />
+
+  <style>
+    /* Apply specific styles to the first radio button */
+    fieldset .form-check:first-child {
+      padding-left: 0.7rem;
+      /* Remove padding-left for the first radio button */
+    }
+
+    .drop-zone {
+      max-width: 200px;
+      height: 200px;
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: "Quicksand", sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      cursor: pointer;
+      color: #cccccc;
+      border: 5px dashed #a0a1a1;
+      border-radius: 9px;
+    }
+
+    .drop-zone--over {
+      border-style: solid;
+    }
+
+    .drop-zone_text {
+      display: none;
+    }
+
+    .drop-zone_thumb {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background-color: #cccccc;
+      background-size: cover;
+      position: relative;
+    }
+
+    .drop-zone_thumb::after {
+      content: attr(data-label);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 5px 0;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.75);
+      font-size: 14px;
+      text-align: center;
+    }
+  </style>
+
+</head>
+
+<body>
+  <script src="../assets/static/js/initTheme.js"></script>
+  <div>
+    <div id="sidebar">
+      <div class="sidebar-wrapper active">
+        <div class="sidebar-header position-relative">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="logo">
+              <a href="../index.html"><img src="https://www.tarc.edu.my/images/tarumt-logo1.png?v=beyongEducation2"
+                  alt="Logo" srcset="" style="width: 150px; height: 60px;"></a>
+            </div>
+            <div class="theme-toggle d-flex gap-2  align-items-center mt-2">
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                role="img" class="iconify iconify--system-uicons" width="20" height="20"
+                preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
+                <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M10.5 14.5c2.219 0 4-1.763 4-3.982a4.003 4.003 0 0 0-4-4.018c-2.219 0-4 1.781-4 4c0 2.219 1.781 4 4 4zM4.136 4.136L5.55 5.55m9.9 9.9l1.414 1.414M1.5 10.5h2m14 0h2M4.135 16.863L5.55 15.45m9.899-9.9l1.414-1.415M10.5 19.5v-2m0-14v-2"
+                    opacity=".3"></path>
+                  <g transform="translate(-210 -1)">
+                    <path d="M220.5 2.5v2m6.5.5l-1.5 1.5"></path>
+                    <circle cx="220.5" cy="11.5" r="4"></circle>
+                    <path d="m214 5l1.5 1.5m5 14v-2m6.5-.5l-1.5-1.5M214 18l1.5-1.5m-4-5h2m14 0h2"></path>
+                  </g>
+                </g>
+              </svg>
+              <div class="form-check form-switch fs-6">
+                <input class="form-check-input  me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
+                <label class="form-check-label"></label>
+              </div>
+              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
+                role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24">
+                <path fill="currentColor"
+                  d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
+                </path>
+              </svg>
+            </div>
+            <div class="sidebar-toggler  x">
+              <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-menu">
+          <ul class="menu">
+            <li class="sidebar-title">Menu</li>
+
+            <li class="sidebar-item ">
+              <a href="../index.html" class='sidebar-link'>
+                <i class="bi bi-grid-fill"></i>
+                <span>My Application</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item  has-sub active">
+              <a href="#" class='sidebar-link'>
+                <i class="bi bi-journal-check"></i>
+                <span>New Application</span>
+              </a>
+              <ul class="submenu ">
+                <li class="submenu-item ">
+                  <a href="./form-intake.html" class="submenu-link">Intake & Programme</a>                  
+                </li> 
+                <li class="submenu-item ">
+                    <a href="./form-profile.html" class="submenu-link">Profile</a>                  
+                </li> 
+                <li class="submenu-item  active">
+                    <a href="./form-detailed.html" class="submenu-link">Detailed Info</a>                  
+                </li> 
+                <li class="submenu-item  ">
+                    <a href="./form-qualification.html" class="submenu-link">Qualifications</a>                  
+                </li>                            
+                <li class="submenu-item  ">
+                    <a href="./form-declaration.html" class="submenu-link">Declaration</a>                  
+                </li> 
+              </ul>
+            </li>
+            <li class="sidebar-item">
+              <a
+                href="../focs/submitEnquiry.html"
+                target="_blank"
+                class="sidebar-link"
+              >
+                <i class="bi bi-question-square"></i>
+                <span>Enquiry</span>
+              </a>
+            </li>
+            <li class="sidebar-item ">
+              <a href="https://web.tarc.edu.my/portal/cpsr/admission/user/Manual.pdf" target="_blank" class='sidebar-link'>
+                  <i class="bi bi-journal-richtext"></i>
+                  <span>Manual Guide</span>
+              </a>
+          </li>
+          <li class="sidebar-item ">
+              <a href="https://web.tarc.edu.my/portal/cpsr/admission/user/doc/TARUMT_ApplicationChecklist.pdf" target="_blank" class='sidebar-link'>
+                  <i class="bi bi-card-checklist"></i>
+                  <span>Application Checklist</span>
+              </a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="main">
+      <header class="mb-3">
+        <a href="#" class="burger-btn d-block d-xl-none">
+          <i class="bi bi-justify fs-3"></i>
+        </a>
+      </header>
+
+      <div class="page-heading">
+        <div class="page-title">
+          <div class="row">
+            <div class="col-12 col-md-6 order-md-1 order-last">
+              <h3>Detailed Information/Details</h3>
+              <p class="text-subtitle text-muted">
+                Complete the application for admission undergraduate programme.
+              </p>
+            </div>
+            <div class="col-12 col-md-6 order-md-2 order-first">
+              <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../index.html">Dashboard</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    New Application
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">DetailedInfo</li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <section id="multiple-column-form">
+          <div class="row match-height">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title"><i class="bi bi-person-fill" style="padding-right: 20px;"></i>Detailed
+                    Information/Details</h4>
+                </div>
+                <div class="card-content">
+                  <div class="card-body">
+                    <form class="form" data-parsley-validate id="detailed-app" enctype="multipart/form-data">
+                      <div class="row">
+                        <div class="col-md-12 col-12">
+                          <div class="form-group mandatory">
+                            <label for="marital-floating" class="form-label">Household Income</label>
+                            <div class="col-12">
+                              <div class="form-group mandatory">
+                                <fieldset style="display: flex;">
+                                  <!-- Household Income Radio Buttons -->
+                                  <div v-for="(option, index) in householdIncomeOptions" :key="index" class="form-check"
+                                    style="margin-left: 1rem;">
+                                    <input class="form-check-input" type="radio" :name="'flexRadioDefault2'"
+                                      :id="'flexRadioDefault' + (index + 3)" :value="option.value"
+                                      :checked="option.value === formData.householdIncome"
+                                      @change="updateIncome(option.value)" :disabled="!isEditing" />
+                                    <label class="form-check-label form-label"
+                                      :for="'flexRadioDefault' + (index + 3)">{{ option.value }}</label>
+                                  </div>
+                                </fieldset>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-12" style="margin-top: 20px;">
+                          <div class="form-group mandatory">
+                            <label for="gener-floating" class="form-label">Medical Condition</label>
+                            <div class="col-12">
+                              <div class="form-group mandatory" style="display: flex;">
+                                <fieldset style="display: flex;">
+                                  <!-- Medical Condition Radio Buttons -->
+                                  <div v-for="(option, index) in medicalOptions" :key="index" class="form-check"
+                                    style="margin-left: 1rem;">
+                                    <input class="form-check-input" type="radio" :id="'flexRadioDefault' + (index)"
+                                      :value="option.value" :name="'flexRadioDefault1'"
+                                      :checked="option.value === mappedMedical" @change="updateMedical(option.value)"
+                                      :disabled="!isEditing" />
+                                    <label class="form-check-label form-label"
+                                      :for="'flexRadioDefault' + (index)">{{ option.value }}</label>
+                                  </div>
+                                </fieldset>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-12 col-12">
+                          <div class="form-group mandatory">
+                            <input v-if="mappedMedical === 'Yes'" v-model="formData.medicalCondition" type="text"
+                              class="form-control" :placeholder="mappedMedicalPlaceholder" :disabled="!isEditing" />
+                          </div>
+                        </div>
+
+                        <section class="section">
+                          <div class="row">
+                            <div class="col-12 col-md-12">
+                              <div class="card">
+                                <div class="card-header" style="padding: 50px 0 0 0;">
+                                  <h5 class="card-title"><i class="bi bi-file-person"
+                                      style="padding-right: 20px;"></i>IC Front and Back</h5>
+                                </div>
+                                <div class="card-content">
+                                  <div class="card-body">
+                                    <p class="card-text">
+                                      Please note that maximum for each attached file size is
+                                      <code>5MB. </code><br>
+                                      The only accepted formats are
+                                      <code>.png, .jpg or .jpeg.</code><br>
+                                      Only <code>one file with IC Front & Back</code> can be uploaded.
+                                    </p>
+
+                                    <div>
+                                      <button v-if="formData.icImage" @click="toggleImage" type="button"
+                                        class="toggleImg btn btn-light-secondary me-1 mb-1" :disabled="!isEditing"
+                                        style="border: none">
+                                        {{ showStoredImage ? 'Remain Image' : 'New Image' }}
+                                      </button>
+                                    </div>
+                                    <img v-if="showStoredImage && formData.icImage"
+                                      :src="'data:image/jpg;base64,' + formData.icImage" alt="" id="retainImage"
+                                      class="" draggable="false" width="170px" height="150px" ref="uploadImage2"/>
+
+                                    <!-- Upload Area -->
+                                    <div v-else id="uploadArea" class="upload-area">
+                                      <!-- Header -->
+                                      <div class="upload-area__header">
+                                        <h1 class="upload-area__title">Upload your file</h1>
+                                        <p class="upload-area__paragraph">
+                                          File should be an image
+                                          <strong class="upload-area__tooltip">
+                                            Like
+                                            <span class="upload-area__tooltip-data"></span>
+                                            <!-- Data Will be Comes From Js -->
+                                          </strong>
+                                        </p>
+                                      </div>
+                                      <!-- End Header -->
+
+                                      <!-- Drop Zoon -->
+                                      <div id="dropZoon" class="upload-area__drop-zoon drop-zoon">
+                                        <span class="drop-zoon__icon">
+                                          <i class='bx bxs-file-image'></i>
+                                        </span>
+                                        <p class="drop-zoon__paragraph">Drop your file here or Click to browse</p>
+                                        <span id="loadingText" class="drop-zoon__loading-text">Please Wait</span>
+
+                                        <img src="" alt="Preview Image" id="previewImage"
+                                          class="drop-zoon__preview-image" draggable="false">
+
+                                        <input v-if="gotData" type="file" id="fileInput" class="drop-zoon__file-input"
+                                          accept="image/jpeg、image/png、image/jpg" ref="uploadImage"
+                                          @change="handleFileChange" required style="opacity: 1; display: block">
+                                        <input v-else type="file" id="fileInput" class="drop-zoon__file-input"
+                                          accept="image/jpeg、image/png、image/jpg" ref="uploadImage"
+                                          @change="handleFileChange" required>
+                                      </div>
+                                      <!-- End Drop Zoon -->
+
+                                      <!-- File Details -->
+                                      <div id="fileDetails" class="upload-area__file-details file-details">
+                                        <h3 class="file-details__title">Uploaded File</h3>
+
+                                        <div id="uploadedFile" class="uploaded-file">
+                                          <div class="uploaded-file__icon-container">
+                                            <i class='bx bxs-file-blank uploaded-file__icon'></i>
+                                            <span class="uploaded-file__icon-text"></span>
+                                            <!-- Data Will be Comes From Js -->
+                                          </div>
+
+                                          <div id="uploadedFileInfo" class="uploaded-file__info">
+                                            <span class="uploaded-file__name">Project 1</span>
+                                            <span class="uploaded-file__counter">0%</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- End File Details -->
+                                    </div>
+                                    <!-- End Upload Area -->
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+
+                        <div class="row">
+                          <div class="col-md-12 col-12 d-flex justify-content-end align-items-end"
+                            style="padding-top: 20px; ">
+                            <div class="col-md-4">
+                              <button @click="toggleEditing" type="button" class="btn btn-warning me-1 mb-1"
+                                style="float:left ">
+                                Click to Edit
+                              </button>
+                            </div>
+                            <div class="col-md-8 d-flex justify-content-end">
+                              <button type="submit" class="btn btn-primary me-1 mb-1" :disabled="!isEditing"
+                                @click="submitForm('formData')">
+                                Save
+                              </button>
+                              <button type="reset" :disabled="!isEditing" class="btn btn-light-secondary me-1 mb-1"
+                                style="border: none !important;">
+                                Reset
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer>
+        <div class="float-start">
+          <p>2023 &copy; TAR UMT</p>
+        </div>
+        <div class="float-end">
+          <p>Kindly Complete <span class=""><i class="bi bi-caret-right-square-fill icon-mid"></i></span>
+            the <a href="#">Application</a></p>
+        </div>
+      </footer>
+    </div>
+  </div>
+  <script src="../assets/static/js/components/dark.js"></script>
+  <script src="../assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
+  <script src="../assets/compiled/js/app.js"></script>
+  <script src="../assets/extensions/jquery/jquery.min.js"></script>
+  <script src="../assets/extensions/parsleyjs/parsley.min.js"></script>
+  <script src="../assets/static/js/pages/parsley.js"></script>
+  <script src="../assets/extensions/sweetalert2/sweetalert2.min.js"></script>
+
+
+  <script src="../plugins/axios/axios.min.js"></script>
+  <script src="../plugins/element-ui/index.js"></script>
+  <script src="../plugins/vue/vue.js"></script>
+  <script src="../api/detailedInfo.js"></script>
+  <script src="../js/request.js"></script>
+  <script src="../js/index.js"></script>
+  <script src="https://unpkg.com/element-ui@2.15.6/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#detailed-app',
+      data() {
+        return {
+          id: '',
+          formData: { // Default value, or load from the server
+            'icImage': '',
+            'householdIncome': 'B40 (no income to RM5000)',
+            'medicalCondition': 'No',
+          },
+          gotData: true,
+          isEditing: true,
+          showStoredImage: true,
+          userInfo: {},
+          convertedFile: null,
+          householdIncomeOptions: [{
+              value: 'B40 (no income to RM5000)'
+            },
+            {
+              value: 'M40 (RM5001 to RM9000)'
+            },
+            {
+              value: 'T20 (RM9001 and above)'
+            },
+          ],
+          medicalOptions: [{
+              value: 'No'
+            },
+            {
+              value: 'Yes'
+            },
+          ],
+        }
+      },
+      computed: {
+        mappedMedical() {
+          return this.formData.medicalCondition === "No" ? "No" : "Yes";
+        },
+        mappedMedicalPlaceholder() {
+          return this.mappedMedical === 'Yes' ? 'If yes, please specify your medical details' : '';
+        }
+      },
+      created() {
+        // this.init()
+        const userInfo = window.localStorage.getItem('userInfo')
+        if (userInfo) {
+          console.log(userInfo)
+          this.userInfo = JSON.parse(userInfo)
+        }
+        if (this.userInfo.applicantId) {
+          this.init()
+        } else {
+         // this.$message.warning('Haven\' Login Account')
+         window.location.href = "./page/login.html";
+        }
+      },
+      mounted() {},
+      methods: {
+        init() {
+          const userInfo = JSON.parse(window.localStorage.getItem('userInfo'))
+          if (userInfo) {
+            this.id = userInfo.applicantId;
+          }
+          console.log("Applicant id here: " + this.id)
+
+          getDetailedInfo(this.id).then(res => {
+            console.log(res)
+            if (String(res.code) === '1') {
+              console.log(res.data)
+              if (res.data != null) {
+                this.gotData = true;
+                this.isEditing = false;
+                this.showStoredImage = true;
+                this.formData = res.data
+                console.log("Here is the IC Image" + typeof this.formData.icImage)
+              } else {
+                this.gotData = false;
+                this.isEditing = true;
+                this.showStoredImage = false;
+                this.formData = {
+                  'icImage': '',
+                  'householdIncome': 'B40 (no income to RM5000)',
+                  'medicalCondition': 'No',
+                }
+                this.$message.warning('Haven\' Fill Up This Form!')
+              }
+            } else {
+              this.$message.error(res.msg || 'Fail to handle')
+              this.gotData = false;
+              this.isEditing = true;
+              this.showStoredImage = false;
+              this.formData = {
+                'icImage': '',
+                'householdIncome': 'B40 (no income to RM5000)',
+                'medicalCondition': 'No',
+              }
+              this.$message.error('Haven\' Fill Up This Form!')
+            }
+          })
+        },
+        submitForm(formName) {
+          console.log("Submit: " + this.gotData)
+          event.preventDefault();
+
+          //For multipart/form-data to be passed to SpringBoot, cannot put JSON data
+          //So, one by one put the value
+          const params = new FormData();
+          // params.append('icImage', this.showStoredImage ? this.formData.icImage : this.$refs.uploadImage.files[0])
+          params.append('householdIncome', this.formData.householdIncome);
+          params.append('medicalCondition', this.formData.medicalCondition);
+          params.append('applicantId', JSON.parse(window.localStorage.getItem('userInfo')).applicantId);
+          params.append('detailedInfoId', this.formData.detailedInfoId);
+
+          if (!this.gotData) {
+            params.append('icImage', this.$refs.uploadImage.files[0])
+            addDetailedInfo(params).then(res => {
+              if (String(res.code) === '1') {
+                console.log('Successfully added new profile details！')
+                this.$message.success('Added new profile details！')
+                setTimeout(() => {
+                  location.reload();
+                }, 500); // 0.5secs
+              } else {
+                this.$message.error(res.msg || 'Fail to handle')
+              }
+            }).catch(err => {
+              console.log('Fail to add profile details！: ' + err)
+              this.$message.error('Request error：' + err)
+            })
+          } else {
+            this.dataURLtoFile()
+            params.append('icImage', this.showStoredImage ? this.convertedFile : this.$refs.uploadImage.files[0])
+            editDetailedInfo(params).then(res => {
+              if (String(res.code) === '1') {
+                this.$message.success('Successfully edited profile details！')
+                setTimeout(() => {
+                  location.reload();;
+                }, 500); // 0.5secs
+              } else {
+                this.$message.error(res.msg || 'Fail to handle')
+              }
+            }).catch(err => {
+              this.$message.error('Request error：' + err)
+            })
+          }
+          // location.reload();
+        },
+        handleFileChange() {
+          let uploadedFile = this.$refs.uploadImage.files[0]
+          this.formData.icFront = uploadedFile
+          console.log("Handle change: " + this.formData.icFront.name)
+          const suffix = uploadedFile.name.split('.')[1]
+          // Check if the file match the format allowed
+          if (['png', 'jpeg', 'jpg'].indexOf(suffix) < 0) {
+            console.log("Handle change: Only accept .png、.jpeg、.jpg format！")
+            this.$message.error('Only accept .png、.jpeg、.jpg format for IC images！')
+            this.$refs.uploadImage.value = ''
+            return false
+          }
+          // Check if the file size is less than or equal to 5MB
+          const size = uploadedFile.size / 1024 / 1024 <= 5
+          if (!size) {
+            console.log("Handle change: File uploaded cannot be larger than 5MB")
+            this.$message.error('File uploaded cannot be larger than 5MB')
+            return false
+          }
+        },
+        updateIncome(selectedIncome) {
+          // Update formData.householdIncome when a radio button is changed
+          this.formData.householdIncome = selectedIncome;
+          // alert('You select the household income of : ' + this.formData.detailedInfo.householdIncome)
+        },
+        updateMedical(selectedCondition) {
+          // Update formData.medicalCondition when a radio button is changed
+          this.formData.medicalCondition = selectedCondition;
+          // alert('You select the medical condition of : ' + this.formData.medicalCondition)
+        },
+        toggleEditing() {
+          // Toggle the isEditing variable to enable/disable form fields
+          this.isEditing = !this.isEditing;
+        },
+        toggleImage() {
+          this.showStoredImage = !this.showStoredImage;
+        },
+        dataURLtoFile() {
+          const base64ImageString = this.formData.icImage;
+          const mimeType = 'image/jpeg'; // Change to the actual image MIME type
+
+          // Decode the base64 string into binary data
+          const binaryData = atob(base64ImageString);
+
+          // Create a Uint8Array from the binary data
+          const uint8Array = new Uint8Array(binaryData.length);
+          for (let i = 0; i < binaryData.length; i++) {
+            uint8Array[i] = binaryData.charCodeAt(i);
+          }
+
+          // Create a Blob from the Uint8Array with the specified MIME type
+          const blob = new Blob([uint8Array], {
+            type: mimeType
+          });
+
+          // Create a File object with a desired filename (e.g., 'image.jpg')
+          const fileName = 'image.jpg'; // Change to the desired filename
+          const imageFile = new File([blob], fileName, {
+            type: mimeType
+          });
+
+          // Now, 'imageFile' contains your image data as a File object
+          console.log('Converted Image File:', imageFile);
+          this.convertedFile = imageFile;
+        }
+      }
+
+    });
+  </script>
+
+
+  <script>
+    const uploadArea = document.querySelector('#uploadArea')
+    const dropZoon = document.querySelector('#dropZoon');
+    const loadingText = document.querySelector('#loadingText');
+    const fileInput = document.querySelector('#fileInput');
+    const previewImage = document.querySelector('#previewImage');
+    const fileDetails = document.querySelector('#fileDetails');
+    const uploadedFile = document.querySelector('#uploadedFile');
+    const uploadedFileInfo = document.querySelector('#uploadedFileInfo');
+    const uploadedFileName = document.querySelector('.uploaded-file__name');
+    const uploadedFileIconText = document.querySelector('.uploaded-file__icon-text');
+    const uploadedFileCounter = document.querySelector('.uploaded-file__counter');
+    const toolTipData = document.querySelector('.upload-area__tooltip-data');
+
+    // Images Types
+    const imagesTypes = [
+      "jpeg",
+      "png",
+      "jpg",
+    ];
+
+    // Append Images Types Array Inside Tooltip Data
+    toolTipData.innerHTML = [...imagesTypes].join(', .');
+
+    dropZoon.addEventListener('dragover', function (event) {
+      event.preventDefault();
+      dropZoon.classList.add('drop-zoon--over');
+    });
+
+    dropZoon.addEventListener('dragleave', function (event) {
+      dropZoon.classList.remove('drop-zoon--over');
+    });
+
+    dropZoon.addEventListener('drop', function (event) {
+      event.preventDefault();
+      dropZoon.classList.remove('drop-zoon--over');
+      const file = event.dataTransfer.files[0];
+      uploadFile(file);
+    });
+
+    dropZoon.addEventListener('click', function (event) {
+
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', function (event) {
+      const file = event.target.files[0];
+      uploadFile(file);
+    });
+
+    function uploadFile(file) {
+      const fileReader = new FileReader();
+      const fileType = file.type;
+      const fileSize = file.size;
+
+      // If File Is Passed from the (File Validation) Function
+      if (fileValidate(fileType, fileSize)) {
+        dropZoon.classList.add('drop-zoon--Uploaded');
+        loadingText.style.display = "block";
+        previewImage.style.display = 'none';
+
+        uploadedFile.classList.remove('uploaded-file--open');
+        uploadedFileInfo.classList.remove('uploaded-file__info--active');
+
+        fileReader.addEventListener('load', function () {
+          // After Half Second 
+          setTimeout(function () {
+            uploadArea.classList.add('upload-area--open');
+            loadingText.style.display = "none";
+            previewImage.style.display = 'block';
+            fileDetails.classList.add('file-details--open');
+            uploadedFile.classList.add('uploaded-file--open');
+            uploadedFileInfo.classList.add('uploaded-file__info--active');
+          }, 500); // 0.5s
+
+          previewImage.setAttribute('src', fileReader.result);
+          uploadedFileName.innerHTML = file.name;
+          progressMove();
+        });
+        fileReader.readAsDataURL(file);
+      } else {
+        this; // (this) Represent The fileValidate(fileType, fileSize) Function
+      };
+    };
+
+    // Progress Counter Increase Function
+    function progressMove() {
+      let counter = 0;
+
+      // After 600ms 
+      setTimeout(() => {
+        // Every 100ms
+        let counterIncrease = setInterval(() => {
+          // If (counter) is equal 100 
+          if (counter === 100) {
+            // Stop (Counter Increase)
+            clearInterval(counterIncrease);
+          } else {
+            counter = counter + 10;
+            // add (counter) value inside (uploadedFileCounter)
+            uploadedFileCounter.innerHTML = `${counter}%`
+          }
+        }, 100);
+      }, 600);
+    };
+
+
+    // Simple File Validate Function
+    function fileValidate(fileType, fileSize) {
+      // File Type Validation
+      let isImage = imagesTypes.filter((type) => fileType.indexOf(`image/${type}`) !== -1);
+
+      // If The Uploaded File Type Is 'jpeg'
+      if (isImage[0] === 'jpeg') {
+        uploadedFileIconText.innerHTML = 'jpg';
+      } else {
+        uploadedFileIconText.innerHTML = isImage[0];
+      };
+
+      // If The Uploaded File Is An Image
+      if (isImage.length !== 0) {
+        if (fileSize <= 5000000) { // 5MB 
+          return true;
+        } else {
+          return alert('Please Your File Should be 2 Megabytes or Less');
+        };
+      } else {
+        return alert('Please make sure to upload An Image File Type');
+      };
+    };
+  </script>
+
+
+</body>
+
+</html>
